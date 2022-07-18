@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Dish {
+  id          Int       @id @default(autoincrement())
+  title       String  @unique
+  description String
+  price       Decimal
+  available   Boolean   @default(true)
+  published   Boolean   @default(false)
+  menu    Menu? @relation(fields: [menuId], references: [id])
+  menuId  Int?
+}
+
+model Menu {
+  id      Int      @id @default(autoincrement())
+  name    String
+  available   Boolean   @default(true)
+  dishes Dish[]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
